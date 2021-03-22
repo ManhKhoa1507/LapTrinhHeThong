@@ -19,7 +19,8 @@ void PrintBitsOfByte(unsigned int x) {
     cout<<"\n";
 }
 
-// thuc hien x&y khong su dung dau &
+//  Thuc hien x&y khong su dung dau &
+//  Su dung dinh luat De Morgan
 int bitAnd(int x, int y)
 {
     int result;
@@ -30,13 +31,16 @@ int bitAnd(int x, int y)
     PrintBits(~y);
     PrintBits(~x | ~y);
     PrintBits(~(~x | ~y));
-   
+    cout << endl;
+
     result = ~(~x | ~y);
     
     return result;
 }
 
-// Tinh gia tri cua -x khong su dung dau -
+//  Tinh gia tri cua -x khong su dung dau -
+//  Chuyen ve ~ cua x
+//  Sau do + 1
 int negative(int x)
 {
     int result;
@@ -44,14 +48,14 @@ int negative(int x)
     PrintBits(x);
     PrintBits(~x);
     PrintBits(~x + 1);
-    cout << "\n";
+    cout << endl;
         
     result = ~x + 1;
     return result;
 }
 
 // Lay bit thu n trong bieu dien nhi phan cua x 0<n<31
-// Shift Right roi &1
+// Dich phai n bits roi &1
 int getBit(int x, int n)
 {
     int result;
@@ -59,6 +63,7 @@ int getBit(int x, int n)
     PrintBits(x);
     PrintBits(x>>n);
     PrintBits((x >> n) & 1);
+    cout << endl;
 
     result = (x>>n) & 1;
 
@@ -66,19 +71,24 @@ int getBit(int x, int n)
 }
 
 // Tinh x*2^n
+// ket qua = x * 1/(2*n)
 int mulpw2(int x, int n)
 {
+    // Chuyen ve negative cua n 
     int result;
     n = negative(n);
 
     PrintBits(x);
     PrintBits(x >> n);
+    cout << endl;
 
     result = x >> n;
     return result;
 }
 
 // Tinh x % 2^n
+// temp = Dich bit sang n phai don vi sau do dich trai n don vi
+// Modul = x - temp 
 int modul2(int x, int n)
 {
     int result = 0;
@@ -87,6 +97,7 @@ int modul2(int x, int n)
     PrintBits(x);
     PrintBits(temp);
     PrintBits(x + negative(temp));
+    cout << endl;
 
     result = x + negative(temp);
 
@@ -104,28 +115,66 @@ int isOdd(int x)
     PrintBits(x);
     PrintBits(getBit(result, 0));
     PrintBits(temp & 1);
+    cout << endl;
 
     result = temp & 1;
     return result;
 }
 
+//  Kiem tra so co chia het cho 8 hay khong
+//  So chia het cho 8 la 3 bits cuoi = 000
 int is8x(int x)
 {
     int result = 0;
 
+    // Lay gia tri 3 bits cuoi
     int bit1 = ~x&1;
     int bit2 = ~ (getBit(x, 1));
     int bit3 = ~ (getBit(x, 2));
 
+    // su dung phep & 3 gia tri xem co ket qua la 1
     result = (bit1 & bit2 & bit3);
     return result;
 }
 
+
+
+// Tra ve 1 neu x duong (x>0)
 int isPositive(int x)
 {
     int result = 0;
-    result = ~ getBit(x,31) & 1;
+
+    //  Lay bit thu 31
+    //  Kiem tra xem x co phai la so 0 hay khong 
+    //      Neu x = 0 (!x = 1) 
+    //      Nguoc lai x = 0
+    //  Kiem tra gia tri sau khi dung phep OR voi 2 gia tri tren co bang 0 hay khong
+    //      Neu  = 1 : so > 0
+    //      Nguoc lai : so <= 0
+    PrintBits((x >> 31) & 1);
+    PrintBits(!x);
+    PrintBits(((((x >> 31)) & 1) | !x));
+    PrintBits(!((((x>>31)) & 1) | !x));
+
+    cout << endl;
+    result = !((((x>>31)) & 1) | !x);
+    
     return result;
+}
+
+//  Tra ve 1 neu x >= 2^n
+int isGE2n(int x, int n)
+{
+    int result = 0;
+    int temp =  1 << n;
+
+    cout << x << endl;
+    result = x + negative(temp);
+
+    cout<<"Positive: "<< (isPositive(result));
+    cout << endl;
+
+    return ~(isPositive(result));
 }
 
 int main()
@@ -176,8 +225,16 @@ int main()
         cout << "\n" << "Pass";
     }*/
     
-    if (isPositive(10) && !isPositive(-5) &&
+    // Cau 2.3
+    /*if (isPositive(10) && !isPositive(-5) &&
         !isPositive(0))
+    {
+        cout << "\n" << "Pass";
+    }*/
+
+    // Cau 2.4
+    if (isGE2n(15, 1) && isGE2n(8, 3) &&
+        !isGE2n(12, 4))
     {
         cout << "\n" << "Pass";
     }
