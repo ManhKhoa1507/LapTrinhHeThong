@@ -25,14 +25,6 @@ int bitAnd(int x, int y)
 {
     int result;
 
-    PrintBits(x);
-    PrintBits(y);
-    PrintBits(~x);
-    PrintBits(~y);
-    PrintBits(~x | ~y);
-    PrintBits(~(~x | ~y));
-    cout << endl;
-
     result = ~(~x | ~y);
     
     return result;
@@ -44,11 +36,6 @@ int bitAnd(int x, int y)
 int negative(int x)
 {
     int result;
-
-    PrintBits(x);
-    PrintBits(~x);
-    PrintBits(~x + 1);
-    cout << endl;
         
     result = ~x + 1;
     return result;
@@ -59,11 +46,6 @@ int negative(int x)
 int getBit(int x, int n)
 {
     int result;
-
-    PrintBits(x);
-    PrintBits(x>>n);
-    PrintBits((x >> n) & 1);
-    cout << endl;
 
     result = (x>>n) & 1;
 
@@ -78,10 +60,6 @@ int mulpw2(int x, int n)
     int result;
     n = negative(n);
 
-    PrintBits(x);
-    PrintBits(x >> n);
-    cout << endl;
-
     result = x >> n;
     return result;
 }
@@ -93,11 +71,6 @@ int modul2(int x, int n)
 {
     int result = 0;
     int temp = (x >> n) << n;
-
-    PrintBits(x);
-    PrintBits(temp);
-    PrintBits(x + negative(temp));
-    cout << endl;
 
     result = x + negative(temp);
 
@@ -111,11 +84,6 @@ int isOdd(int x)
 {
     int result = 0;
     int temp = getBit(x, 0);
-    
-    PrintBits(x);
-    PrintBits(getBit(result, 0));
-    PrintBits(temp & 1);
-    cout << endl;
 
     result = temp & 1;
     return result;
@@ -151,14 +119,19 @@ int isPositive(int x)
     //  Kiem tra gia tri sau khi dung phep OR voi 2 gia tri tren co bang 0 hay khong
     //      Neu  = 1 : so > 0
     //      Nguoc lai : so <= 0
-    PrintBits((x >> 31) & 1);
-    PrintBits(!x);
-    PrintBits(((((x >> 31)) & 1) | !x));
-    PrintBits(!((((x>>31)) & 1) | !x));
-
-    cout << endl;
     result = !((((x>>31)) & 1) | !x);
     
+    return result;
+}
+
+//  Kiem tra so < 0
+//  Neu <= 0 tra ve 1 
+//  Nguoc lai tra ve 0 
+int CheckPositive(int x)
+{
+    int result = 0;
+    result = !((x >> 31) & 1);
+
     return result;
 }
 
@@ -166,71 +139,72 @@ int isPositive(int x)
 int isGE2n(int x, int n)
 {
     int result = 0;
+
+    // Dich trai n lan de tinh gia tri cua 2^n
     int temp =  1 << n;
 
-    cout << x << endl;
+    //  Tinh gia tri cua x - 2^n 
+    //      Neu > 0 : x >= 2^n
+    //      Nguoc lai : x < 2^n
     result = x + negative(temp);
 
-    cout<<"Positive: "<< (isPositive(result));
-    cout << endl;
-
-    return ~(isPositive(result));
+    return (CheckPositive(result));
 }
 
 int main()
 {
     // Cau 1.1
-    /*if (bitAnd(3, -9) == (3 & -9))
+    if (bitAnd(3, -9) == (3 & -9))
     {
         cout << "\n" <<"Pass";
-    }*/
+    }
 
     // Cau 1.2
-    /*if (negative(0) == 0 && negative(9) == -9
+    if (negative(0) == 0 && negative(9) == -9
         && negative(-5) == 5)
     {
         cout << "\n" << "Pass";
-    }*/
+    }
 
     // Cau 1.3
-    /*if (getBit(8, 0) == 0 && getBit(3, 1) == 1 &&
+    if (getBit(8, 0) == 0 && getBit(3, 1) == 1 &&
         getBit(32, 5) == 1)
     {
         cout << "\n" << "Pass";
-    }*/
+    }
     
     // Cau 1.4
-    /*if (mulpw2(10, -1) == 5 && mulpw2(15, -2)
+    if (mulpw2(10, -1) == 5 && mulpw2(15, -2)
         == 3 && mulpw2(103, -4) == 6)
     {
         cout << "\n" << "Pass";
-    }*/
+    }
 
     // Cau 1.5
-    /*if (modul2(2, 1) == 0 && modul2(30, 2) == 2
+    if (modul2(2, 1) == 0 && modul2(30, 2) == 2
         && modul2(63, 6) == 63)
     {
         cout << "\n" << "Pass";
-    }*/
+    }
 
     // Cau 2.1
-    /*if (isOdd(3) && !isOdd(0) && !isOdd(12))
+    if (isOdd(3) && !isOdd(0) && !isOdd(12))
     {
         cout << "\n" << "Pass";
-    }*/
+    }
 
     // Cau 2.2
-    /*if (is8x(16) && !is8x(3) && is8x(0))
+    if (is8x(16) && !is8x(3) && is8x(0))
     {
         cout << "\n" << "Pass";
-    }*/
+    }
     
     // Cau 2.3
-    /*if (isPositive(10) && !isPositive(-5) &&
+    if (isPositive(10) && !isPositive(-5) &&
         !isPositive(0))
     {
         cout << "\n" << "Pass";
-    }*/
+    }
 
     // Cau 2.4
     if (isGE2n(15, 1) && isGE2n(8, 3) &&
