@@ -5,14 +5,14 @@
     .globl _start
 
 _start :
-    movl $4, %edx       ;get the input
+    movl $4, %edx       # Nhap input
     movl $input, %ecx
     movl $0, %ebx
     movl $3, %eax
     int $0x80
     
-    movl $input, %eax   ; convert to UpperCase
-    mov 0(%eax), %bh    ; -32 in ASCII
+    movl $input, %eax   # Chuyen doi chu thuong sang in hoa
+    mov 0(%eax), %bh    # Bang cach - 32
     sub $32, %bh
     mov %bh, 0(%eax)
 
@@ -24,7 +24,7 @@ _start :
     sub $32, %bh
     mov %bh, 2(%eax)
 
-    movl $4, %edx       ; Print the result
+    movl $4, %edx       # In string sau khi duoc chuyen doi 
     movl %eax, %ecx
     movl $4, %eax
     movl $1, %ebx
